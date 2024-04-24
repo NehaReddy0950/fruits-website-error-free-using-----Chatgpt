@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Farmers Fruits - Fresh Fruits From Farm</title>
+<style>
+  /* CSS Styles */
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+  header {
+    background-color: #ffffff; /* Added a lighter background color for better contrast */
+    color: #333333; /* Changed text color to a darker shade for better contrast */
+    text-align: center;
+    padding: 20px 0;
+  }
+  h1 {
+    margin: 0;
+    font-size: 36px;
+  }
+  h2 {
+    margin-top: 5px;
+    font-size: 24px;
+  }
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  .cart {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-top: 20px;
+  }
+  #userInfoForm {
+    margin-top: 20px;
+  }
+  #userInfoForm input {
+    margin-bottom: 10px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Farmers Fruits</h1>
+  <h2>Fresh Fruits From Farm</h2>
+</header>
+
+<div class="container">
+  <h3>Order Details:</h3>
+  <!-- Added labels for input fields -->
+  <label for="appleQuantity">Apple Quantity:</label>
+  <p>Fruit: Apple</p>
+  <p>Quantity: <input type="number" id="appleQuantity" value="1"></p>
+  <button onclick="addToCart('Apple', 'appleQuantity')">Add to Cart</button>
+
+  <!-- Similar labels added for other fruits -->
+  <!-- Added labels for input fields -->
+  <label for="orangeQuantity">Orange Quantity:</label>
+  <p>Fruit: Orange</p>
+  <p>Quantity: <input type="number" id="orangeQuantity" value="1"></p>
+  <button onclick="addToCart('Orange', 'orangeQuantity')">Add to Cart</button>
+
+  <label for="bananaQuantity">Banana Quantity:</label>
+  <p>Fruit: Banana</p>
+  <p>Quantity: <input type="number" id="bananaQuantity" value="1"></p>
+  <button onclick="addToCart('Banana', 'bananaQuantity')">Add to Cart</button>
+
+  <label for="mangoQuantity">Mango Quantity:</label>
+  <p>Fruit: Mango</p>
+  <p>Quantity: <input type="number" id="mangoQuantity" value="1"></p>
+  <button onclick="addToCart('Mango', 'mangoQuantity')">Add to Cart</button>
+
+  <label for="pineappleQuantity">Pineapple Quantity:</label>
+  <p>Fruit: Pineapple</p>
+  <p>Quantity: <input type="number" id="pineappleQuantity" value="1"></p>
+  <button onclick="addToCart('Pineapple', 'pineappleQuantity')">Add to Cart</button>
+
+  <label for="watermelonQuantity">Watermelon Quantity:</label>
+  <p>Fruit: Watermelon</p>
+  <p>Quantity: <input type="number" id="watermelonQuantity" value="1"></p>
+  <button onclick="addToCart('Watermelon', 'watermelonQuantity')">Add to Cart</button>
+
+  <div id="cart" class="cart">
+    <h3>Cart:</h3>
+    <p>Total Items: <span id="totalItems">0</span></p>
+    <p>Total Price: $<span id="cartTotal">0.00</span></p>
+    <p>Discount: $<span id="discount">0.00</span></p>
+    <p>Final Price: $<span id="finalPrice">0.00</span></p>
+  </div>
+
+  <div id="userInfoForm">
+    <h3>User Information:</h3>
+    <!-- Added labels for input fields -->
+    <label for="address">Address:</label>
+    <input type="text" id="address" placeholder="Address"><br>
+    <!-- Added labels for input fields -->
+    <label for="phone">Phone Number:</label>
+    <input type="text" id="phone" placeholder="Phone Number"><br>
+    <button onclick="placeOrder()">Place Order</button>
+  </div>
+
+  <div id="orderConfirmation" style="display: none;">
+    <h3>Thank you for purchasing!</h3>
+    <p>You will receive your items in 3 hours.</p>
+    <h3>Bill:</h3>
+    <p>Total Price: $<span id="finalPriceDisplay">0.00</span></p>
+  </div>
+</div>
+
+<script>
+  // JavaScript code
+  var cart = [];
+  var pricePerFruit = {
+    'Apple': 5.00,
+    'Orange': 4.00,
+    'Banana': 3.00,
+    'Mango': 6.00,
+    'Pineapple': 7.00,
+    'Watermelon': 8.00
+  };
+  var discountPercentage = 0.20; // 20% discount
+
+  function addToCart(fruitName, quantityInputId) {
+    var quantity = parseInt(document.getElementById(quantityInputId).value);
+    var totalPrice = quantity * pricePerFruit[fruitName];
+    var discount = 0;
+
+    if (quantity > 2) {
+      discount = totalPrice * discountPercentage;
+    }
+
+    var finalPrice = totalPrice - discount;
+
+    cart.push({ fruit: fruitName, quantity: quantity, totalPrice: totalPrice, discount: discount, finalPrice: finalPrice });
+    updateCart();
+  }
+
+  function updateCart() {
+    var totalItems = 0;
+    var cartTotal = 0;
+    var totalDiscount = 0;
+    var finalCartPrice = 0;
+
+    for (var i = 0; i < cart.length; i++) {
+      totalItems += cart[i].quantity;
+      cartTotal += cart[i].totalPrice;
+      totalDiscount += cart[i].discount;
+      finalCartPrice += cart[i].finalPrice;
+    }
+
+    document.getElementById('totalItems').innerText = totalItems;
+    document.getElementById('cartTotal').innerText = cartTotal.toFixed(2);
+    document.getElementById('discount').innerText = totalDiscount.toFixed(2);
+    document.getElementById('finalPrice').innerText = finalCartPrice.toFixed(2);
+  }
+
+  function placeOrder() {
+    var address = document.getElementById('address').value;
+    var phone = document.getElementById('phone').value;
+
+    // You can implement order placement logic here, like sending data to a server, etc.
+    // For now, just display the order confirmation message and bill.
+    document.getElementById('orderConfirmation').style.display = 'block';
+    document.getElementById('finalPriceDisplay').innerText = document.getElementById('finalPrice').innerText;
+  }
+</script>
+
+</body>
+</html>
